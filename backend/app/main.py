@@ -1,8 +1,9 @@
 import os
+from backend.app.api import chat, evolution
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
-from app.api import chat, evolve, evolution
+from backend.app.config import settings
+from backend.app.api import evolve
 
 app = FastAPI(
     title=settings.PROJECT_NAME,

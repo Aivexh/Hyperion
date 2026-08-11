@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 
-from app.hyperagent.task_agent import TaskAgentExecutor
+from backend.app.hyperagent.task_agent import TaskAgentExecutor
 
 router = APIRouter(tags=["Chat"])
 

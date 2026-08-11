@@ -1,9 +1,9 @@
 import time
 import asyncio
 from typing import AsyncGenerator, Dict, Any
-from app.hyperagent.archive import archive_manager, Generation
-from app.hyperagent.selection import parent_selector
-from app.hyperagent.evaluator import llm_judge_evaluator
+from backend.app.hyperagent.archive import archive_manager, Generation
+from backend.app.hyperagent.selection import parent_selector
+from backend.app.hyperagent.evaluator import llm_judge_evaluator
 
 class MetaAgentMutator:
     """

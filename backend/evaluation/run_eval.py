@@ -1,14 +1,15 @@
+from backend.evaluation.plot_generator import generate_performance_plots
+from backend.app.hyperagent.meta_agent import meta_agent_mutator
+from backend.app.hyperagent.archive import archive_manager
 import os
 import sys
 import json
 import asyncio
 
 # Ensure app package is in path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..")))
 
-from app.hyperagent.archive import archive_manager
-from app.hyperagent.meta_agent import meta_agent_mutator
-from evaluation.plot_generator import generate_performance_plots
 
 async def run_evaluation_pipeline(num_generations: int = 5):
     """
@@ -16,7 +17,8 @@ async def run_evaluation_pipeline(num_generations: int = 5):
     verifying self-improvement performance metrics and generating visual plots.
     """
     print("=" * 70)
-    print(f"STARTING HYPERAGENT SELF-IMPROVEMENT EVALUATION PIPELINE ({num_generations} GENERATIONS)")
+    print(
+        f"STARTING HYPERAGENT SELF-IMPROVEMENT EVALUATION PIPELINE ({num_generations} GENERATIONS)")
     print("=" * 70)
 
     for step in range(1, num_generations + 1):
@@ -26,7 +28,8 @@ async def run_evaluation_pipeline(num_generations: int = 5):
                 print(f"[LOG] {event['message']}")
             elif event.get("type") == "generation_created":
                 gen = event["generation"]
-                print(f"[SUCCESS] Created {gen['generation_id']} | Score: {gen['score']} (+{event['score_delta']} pts)")
+                print(
+                    f"[SUCCESS] Created {gen['generation_id']} | Score: {gen['score']} (+{event['score_delta']} pts)")
 
     # Load final archive and plot
     archive_file = archive_manager.archive_path
@@ -38,9 +41,12 @@ async def run_evaluation_pipeline(num_generations: int = 5):
 
     print("\n" + "=" * 70)
     print("EVALUATION PIPELINE COMPLETED SUCCESSFULLY!")
-    print(f"Total Generations Archived: {len(archive_manager.get_all_generations())}")
-    print(f"Baseline G0 Score: {archive_manager.get_all_generations()[0].score}")
-    print(f"Latest Generation Score: {archive_manager.get_latest_generation().score}")
+    print(
+        f"Total Generations Archived: {len(archive_manager.get_all_generations())}")
+    print(
+        f"Baseline G0 Score: {archive_manager.get_all_generations()[0].score}")
+    print(
+        f"Latest Generation Score: {archive_manager.get_latest_generation().score}")
     print("=" * 70)
 
 if __name__ == "__main__":

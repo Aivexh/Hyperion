@@ -2,7 +2,7 @@ import difflib
 from fastapi import APIRouter, HTTPException, Query
 from typing import List, Dict, Any, Optional
 
-from app.hyperagent.archive import archive_manager, Generation
+from backend.app.hyperagent.archive import archive_manager, Generation
 
 router = APIRouter(tags=["Evolution History"])
 

@@ -4,9 +4,9 @@ import asyncio
 from typing import Dict, Any, List, AsyncGenerator, TypedDict, Annotated, Sequence
 import operator
 
-from app.config import settings
-from app.hyperagent.archive import archive_manager, Generation
-from app.hyperagent.tools import AVAILABLE_TOOLS, web_search, calculator, python_interpreter, data_analyzer
+from backend.app.config import settings
+from backend.app.hyperagent.archive import archive_manager, Generation
+from backend.app.hyperagent.tools import AVAILABLE_TOOLS, web_search, calculator, python_interpreter, data_analyzer
 
 class AgentState(TypedDict):
     messages: List[Dict[str, str]]
