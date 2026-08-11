@@ -1,0 +1,42 @@
+[
+  {
+    "id": "task_1",
+    "category": "Mathematical Reasoning",
+    "prompt": "Calculate the result of (45 * 12) + sqrt(144) - 25% of 200.",
+    "expected_output": "480",
+    "difficulty": "Medium",
+    "weight": 20
+  },
+  {
+    "id": "task_2",
+    "category": "Information Retrieval",
+    "prompt": "What is Meta's HyperAgents research about and what are its key components?",
+    "expected_output": "Self-improving AI agent system consisting of TaskAgent and MetaAgent with score-proportional parent selection.",
+    "difficulty": "Medium",
+    "weight": 20
+  },
+  {
+    "id": "task_3",
+    "category": "Code Execution",
+    "prompt": "Write Python code to compute the 10th Fibonacci number.",
+    "expected_output": "55",
+    "difficulty": "Easy",
+    "weight": 20
+  },
+  {
+    "id": "task_4",
+    "category": "Logical Deduction",
+    "prompt": "If all HyperAgents are self-improving, and System X is a HyperAgent, does System X self-improve?",
+    "expected_output": "Yes, System X self-improves logically.",
+    "difficulty": "Easy",
+    "weight": 20
+  },
+  {
+    "id": "task_5",
+    "category": "Multi-Step Orchestration",
+    "prompt": "Find the capital of France, calculate the square of 12, and analyze evolution score metrics.",
+    "expected_output": "Paris, 144, dataset analysis showing monotonic improvement.",
+    "difficulty": "Hard",
+    "weight": 20
+  }
+]
