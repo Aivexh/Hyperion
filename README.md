@@ -299,6 +299,3 @@ Fork → Create branch → Make changes → Run tests/evaluation → Open Pull R
 
 ---
 
-## License
-
-This project currently does not include an explicit open-source license.
