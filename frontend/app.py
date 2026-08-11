@@ -1,3 +1,6 @@
+from frontend.utils.api_client import api_client
+from frontend.views.dashboard_view import render_dashboard_view
+from frontend.views.chat_view import render_chat_view
 import streamlit as st
 
 st.set_page_config(
@@ -7,13 +10,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-from views.chat_view import render_chat_view
-from views.dashboard_view import render_dashboard_view
-from utils.api_client import api_client
 
 def main():
     # Sidebar Navigation & System Info
-    st.sidebar.image("https://img.icons8.com/isometric-folders/100/brain.png", width=64)
+    st.sidebar.image(
+        "https://img.icons8.com/isometric-folders/100/brain.png", width=64)
     st.sidebar.title("HyperAgent Architecture")
     st.sidebar.caption("Inspired by Meta's HyperAgents Research")
     st.sidebar.markdown("---")
@@ -47,6 +48,7 @@ def main():
         render_chat_view()
     else:
         render_dashboard_view()
+
 
 if __name__ == "__main__":
     main()

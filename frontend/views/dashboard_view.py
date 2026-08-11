@@ -3,26 +3,31 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-from utils.api_client import api_client
-from utils.diff_utils import render_side_by_side_diff
+from frontend.utils.api_client import api_client
+from frontend.utils.diff_utils import render_side_by_side_diff
+
 
 def render_dashboard_view():
     st.title("🧬 HyperAgent Evolution & Self-Improvement Dashboard")
-    st.caption("Meta-HyperAgent autonomous prompt and code optimization engine metrics.")
+    st.caption(
+        "Meta-HyperAgent autonomous prompt and code optimization engine metrics.")
 
     # 1. Fetch Evolution History
     generations = api_client.get_evolution_history()
-    
+
     if not generations:
-        st.error("⚠️ Backend Archive unavailable. Click 'Trigger Evolution' below to run initial seed cycle.")
+        st.error(
+            "⚠️ Backend Archive unavailable. Click 'Trigger Evolution' below to run initial seed cycle.")
         generations = []
 
     # Calculate Header KPI Metrics
     total_gens = len(generations)
-    latest_gen = generations[-1] if generations else {"generation_id": "gen_0", "score": 62.5, "parent_id": None}
+    latest_gen = generations[-1] if generations else {
+        "generation_id": "gen_0", "score": 62.5, "parent_id": None}
     baseline_gen = generations[0] if generations else latest_gen
-    
-    best_score = max([g.get("score", 0) for g in generations]) if generations else 62.5
+
+    best_score = max([g.get("score", 0)
+                     for g in generations]) if generations else 62.5
     baseline_score = baseline_gen.get("score", 62.5)
     delta_score = round(best_score - baseline_score, 1)
 
@@ -31,11 +36,13 @@ def render_dashboard_view():
     with col_kpi1:
         st.metric(label="Total Generations", value=total_gens)
     with col_kpi2:
-        st.metric(label="Peak Rubric Score", value=f"{best_score}/100", delta=f"+{delta_score} pts" if delta_score > 0 else None)
+        st.metric(label="Peak Rubric Score",
+                  value=f"{best_score}/100", delta=f"+{delta_score} pts" if delta_score > 0 else None)
     with col_kpi3:
         st.metric(label="Baseline Score (G0)", value=f"{baseline_score}/100")
     with col_kpi4:
-        st.metric(label="Avg Token Cost", value=f"${latest_gen.get('token_cost', 0.0015):.5f}")
+        st.metric(label="Avg Token Cost",
+                  value=f"${latest_gen.get('token_cost', 0.0015):.5f}")
 
     st.markdown("---")
 
@@ -52,10 +59,12 @@ def render_dashboard_view():
                 y="score",
                 markers=True,
                 title="Optimization Trajectory (Meta-HyperAgent Score-Proportional Selection)",
-                labels={"generation_id": "Generation Version", "score": "LLM Judge Score"},
+                labels={"generation_id": "Generation Version",
+                        "score": "LLM Judge Score"},
                 line_shape="spline"
             )
-            fig.update_traces(line_color="#4F46E5", line_width=4, marker_size=10, marker_color="#10B981")
+            fig.update_traces(line_color="#4F46E5", line_width=4,
+                              marker_size=10, marker_color="#10B981")
             fig.update_layout(
                 template="plotly_dark",
                 paper_bgcolor="rgba(0,0,0,0)",
@@ -67,17 +76,19 @@ def render_dashboard_view():
 
     with col_trigger:
         st.subheader("⚡ Autonomous Evolution Control")
-        st.write("Trigger the MetaAgent to mutate system prompts, run judge benchmarks, and archive the next generation.")
-        
-        trigger_btn = st.button("🚀 Trigger Next Generation Evolution", type="primary", use_container_width=True)
-        
+        st.write(
+            "Trigger the MetaAgent to mutate system prompts, run judge benchmarks, and archive the next generation.")
+
+        trigger_btn = st.button(
+            "🚀 Trigger Next Generation Evolution", type="primary", use_container_width=True)
+
         log_box = st.empty()
         progress_bar = st.progress(0)
 
         if trigger_btn:
             log_messages = []
             progress_val = 0
-            
+
             with st.spinner("MetaAgent executing parent selection & prompt mutation..."):
                 for event in api_client.stream_evolution_trigger():
                     event_type = event.get("type")
@@ -90,7 +101,8 @@ def render_dashboard_view():
                     elif event_type == "generation_created":
                         progress_bar.progress(100)
                         gen_info = event.get("generation", {})
-                        st.success(f"🎉 Created Generation `{gen_info.get('generation_id')}`! Score: `{gen_info.get('score')}` (+{event.get('score_delta')} pts)")
+                        st.success(
+                            f"🎉 Created Generation `{gen_info.get('generation_id')}`! Score: `{gen_info.get('score')}` (+{event.get('score_delta')} pts)")
                         st.rerun()
 
     st.markdown("---")
@@ -101,11 +113,13 @@ def render_dashboard_view():
     if len(generations) >= 1:
         gen_list = [g["generation_id"] for g in generations]
         col_da, col_db = st.columns(2)
-        
+
         with col_da:
-            gen_a_id = st.selectbox("Select Base Parent Generation (Left)", options=gen_list, index=0)
+            gen_a_id = st.selectbox(
+                "Select Base Parent Generation (Left)", options=gen_list, index=0)
         with col_db:
-            gen_b_id = st.selectbox("Select Target Mutated Generation (Right)", options=gen_list, index=len(gen_list)-1)
+            gen_b_id = st.selectbox(
+                "Select Target Mutated Generation (Right)", options=gen_list, index=len(gen_list)-1)
 
         diff_data = api_client.get_generation_diff(gen_a_id, gen_b_id)
 

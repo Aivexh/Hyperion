@@ -1,27 +1,33 @@
 import json
 import streamlit as st
-from utils.api_client import api_client
+from frontend.utils.api_client import api_client
+
 
 def render_chat_view():
     st.title("💬 HyperAgent Task Execution Interface")
-    st.caption("Interact with the LangGraph TaskAgent using prompt and code heuristics from any evolved generation.")
+    st.caption(
+        "Interact with the LangGraph TaskAgent using prompt and code heuristics from any evolved generation.")
 
     # Fetch generations for selector
     generations = api_client.get_evolution_history()
     if not generations:
-        st.warning("⚠️ Could not connect to backend archive or no generations found. Operating in local mode.")
+        st.warning(
+            "⚠️ Could not connect to backend archive or no generations found. Operating in local mode.")
         gen_options = ["gen_0"]
     else:
         gen_options = [g["generation_id"] for g in generations]
 
     col_sel, col_info = st.columns([1, 2])
     with col_sel:
-        selected_gen = st.selectbox("Select Target Generation Version", options=gen_options, index=len(gen_options)-1)
-    
+        selected_gen = st.selectbox(
+            "Select Target Generation Version", options=gen_options, index=len(gen_options)-1)
+
     with col_info:
         if generations:
-            curr_g = next((g for g in generations if g["generation_id"] == selected_gen), generations[-1])
-            st.info(f"**Selected**: `{selected_gen}` | **Score**: `{curr_g.get('score', 0)}/100` | **Parent**: `{curr_g.get('parent_id', 'None')}`")
+            curr_g = next(
+                (g for g in generations if g["generation_id"] == selected_gen), generations[-1])
+            st.info(
+                f"**Selected**: `{selected_gen}` | **Score**: `{curr_g.get('score', 0)}/100` | **Parent**: `{curr_g.get('parent_id', 'None')}`")
 
     st.markdown("---")
 
@@ -49,7 +55,8 @@ def render_chat_view():
     # User Input Chat Box
     if user_query := st.chat_input("Enter your task objective or query..."):
         # Add user message
-        st.session_state.messages.append({"role": "user", "content": user_query})
+        st.session_state.messages.append(
+            {"role": "user", "content": user_query})
         with st.chat_message("user"):
             st.markdown(user_query)
 
@@ -61,32 +68,40 @@ def render_chat_view():
             thought_steps = []
             full_response = ""
 
-            status_container.status(f"⚡ TaskAgent ReAct Execution (Gen {selected_gen})...", expanded=True)
+            status_container.status(
+                f"⚡ TaskAgent ReAct Execution (Gen {selected_gen})...", expanded=True)
 
             # Consume SSE Stream from Backend
             for event in api_client.stream_chat(user_query, generation_id=selected_gen):
                 event_type = event.get("type")
-                
+
                 if event_type == "status":
                     status_container.write(f"ℹ️ {event.get('message')}")
                     thought_steps.append(f"Status: {event.get('message')}")
                 elif event_type == "thought":
-                    thought_steps.append(f"Thought Step {event.get('step')}: {event.get('content')}")
-                    status_container.write(f"💭 **Reasoning**: {event.get('content')}")
+                    thought_steps.append(
+                        f"Thought Step {event.get('step')}: {event.get('content')}")
+                    status_container.write(
+                        f"💭 **Reasoning**: {event.get('content')}")
                 elif event_type == "tool_start":
-                    thought_steps.append(f"Tool Invoked: `{event.get('tool')}` with input: `{event.get('tool_input')}`")
-                    status_container.write(f"🛠️ **Executing Tool**: `{event.get('tool')}`...")
+                    thought_steps.append(
+                        f"Tool Invoked: `{event.get('tool')}` with input: `{event.get('tool_input')}`")
+                    status_container.write(
+                        f"🛠️ **Executing Tool**: `{event.get('tool')}`...")
                 elif event_type == "observation":
-                    thought_steps.append(f"Observation: {event.get('observation')}")
-                    status_container.write(f"👁️ **Observation**: {event.get('observation')}")
+                    thought_steps.append(
+                        f"Observation: {event.get('observation')}")
+                    status_container.write(
+                        f"👁️ **Observation**: {event.get('observation')}")
                 elif event_type == "token":
                     full_response += event.get("content", "")
                     message_placeholder.markdown(full_response + "▌")
                 elif event_type == "done":
-                    status_container.update(label="✅ Task Execution Complete", state="complete", expanded=False)
+                    status_container.update(
+                        label="✅ Task Execution Complete", state="complete", expanded=False)
 
             message_placeholder.markdown(full_response)
-            
+
             # Save Assistant Response to Session State
             st.session_state.messages.append({
                 "role": "assistant",
@@ -98,7 +113,7 @@ def render_chat_view():
     # File Download & Export Section
     st.markdown("---")
     col_dl1, col_dl2 = st.columns([1, 1])
-    
+
     with col_dl1:
         # Export as Markdown
         md_text = f"# HyperAgent Conversation History (Gen {selected_gen})\n\n"
