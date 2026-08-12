@@ -1,5 +1,5 @@
 import os
-from backend.app.api import chat, evolution
+from app.api import chat, evolution
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.config import settings
