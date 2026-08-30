@@ -1,6 +1,6 @@
-from backend.evaluation.plot_generator import generate_performance_plots
-from backend.app.hyperagent.meta_agent import meta_agent_mutator
-from backend.app.hyperagent.archive import archive_manager
+from app.evaluation.plot_generator import generate_performance_plots
+from app.hyperagent.meta_agent import meta_agent_mutator
+from app.hyperagent.archive import archive_manager
 import os
 import sys
 import json
