@@ -9,12 +9,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python dependencies
-COPY backend/requirements.txt /app/requirements.txt
+COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy source code
-COPY backend/app /app/app
-COPY backend/evaluation /app/evaluation
+COPY app /app/app
+COPY evaluation /app/evaluation
 
 ENV PYTHONUNBUFFERED=1
 ENV HOST=0.0.0.0
