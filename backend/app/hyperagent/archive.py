@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from typing import Dict, List, Any, Optional
 from pydantic import BaseModel, Field
-from backend.app.config import settings
+from app.config import settings
 
 class Generation(BaseModel):
     generation_id: str
