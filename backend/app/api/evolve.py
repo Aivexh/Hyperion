@@ -1,8 +1,8 @@
 import json
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from backend.app.hyperagent.meta_agent import meta_agent_mutator
-from backend.app.hyperagent.archive import archive_manager
+from app.hyperagent.meta_agent import meta_agent_mutator
+from app.hyperagent.archive import archive_manager
 
 router = APIRouter(tags=["Evolution"])
 
