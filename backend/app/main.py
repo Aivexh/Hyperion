@@ -1,9 +1,8 @@
 import os
-from app.api import chat, evolution
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.app.config import settings
-from backend.app.api import evolve
+from app.config import settings
+from app.api import chat, evolve, evolution
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -13,29 +12,35 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS Middleware Configuration
+# Parse CORS Origins from settings
+origins = [origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",") if origin.strip()]
+if not origins:
+    origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include Routers
+# Include API Routers
 app.include_router(chat.router, prefix=settings.API_V1_STR)
 app.include_router(evolve.router, prefix=settings.API_V1_STR)
 app.include_router(evolution.router, prefix=settings.API_V1_STR)
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
+    """Lightweight health check endpoint for container orchestrators and VPS probes."""
     return {
-        "status": "healthy",
+        "status": "ok",
+        "healthy": True,
         "service": settings.PROJECT_NAME,
         "mock_mode": settings.MOCK_MODE
     }
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT, reload=True)
+    port = int(os.getenv("PORT", settings.PORT))
+    uvicorn.run("app.main:app", host=settings.HOST, port=port, reload=False)
