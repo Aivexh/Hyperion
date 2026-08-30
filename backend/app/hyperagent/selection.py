@@ -1,7 +1,7 @@
 import random
 import math
 from typing import List, Tuple
-from backend.app.hyperagent.archive import Generation, archive_manager
+from app.hyperagent.archive import Generation, archive_manager
 from app.config import settings
 
 class ParentSelector:
