@@ -3,8 +3,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-from frontend.utils.api_client import api_client
-from frontend.utils.diff_utils import render_side_by_side_diff
+from utils.api_client import api_client
+from utils.diff_utils import render_side_by_side_diff
 
 
 def render_dashboard_view():
