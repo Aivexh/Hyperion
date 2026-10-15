@@ -1,6 +1,8 @@
-from frontend.utils.api_client import api_client
-from frontend.views.dashboard_view import render_dashboard_view
-from frontend.views.chat_view import render_chat_view
+
+from utils.api_client import api_client
+from views.dashboard_view import render_dashboard_view
+from views.chat_view import render_chat_view
+
 import streamlit as st
 
 st.set_page_config(
