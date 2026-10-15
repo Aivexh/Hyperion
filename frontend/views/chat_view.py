@@ -68,9 +68,12 @@ def render_chat_view():
             thought_steps = []
             full_response = ""
 
-            status_container.status(
-                f"⚡ TaskAgent ReAct Execution (Gen {selected_gen})...", expanded=True)
+status_container = st.empty()
+thought_steps = []
+full_response = ""
 
+status_container.status(
+    f"⚡ TaskAgent ReAct Execution (Gen {selected_gen})...", expanded=True)
             # Consume SSE Stream from Backend
             for event in api_client.stream_chat(user_query, generation_id=selected_gen):
                 event_type = event.get("type")
