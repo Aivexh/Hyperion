@@ -1,6 +1,6 @@
 import json
 import streamlit as st
-from frontend.utils.api_client import api_client
+from utils.api_client import api_client
 
 
 def render_chat_view():
